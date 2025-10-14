@@ -1,0 +1,68 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f4f8;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.add {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+input#newTask {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+button#btnAdd {
+  padding: 0.6rem 1.2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button#btnAdd:hover {
+  background-color: #0056b3;
+}
+ul#tasksList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+li.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #eee;
+}
+li.task.completed .title {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+li.task .title {
+  cursor: pointer;
+}
+li.task button.delete-btn {
+  background: transparent;
+  border: none;
+  color: #c00;
+  cursor: pointer;
+}
+
