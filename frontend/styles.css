@@ -1,68 +1,45 @@
+/* Fondo minimalista */
 body {
+  background-color: #e9ecef; /* Gris claro */
   font-family: Arial, sans-serif;
-  background: #f2f4f8;
-  margin: 0;
-  padding: 0;
-  color: #333;
 }
-.container {
-  max-width: 600px;
-  margin: 2rem auto;
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-h1 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-.add {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-input#newTask {
-  flex: 1;
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-button#btnAdd {
-  padding: 0.6rem 1.2rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-button#btnAdd:hover {
-  background-color: #0056b3;
-}
-ul#tasksList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-li.task {
+
+/* Lista de tareas */
+#taskList li.list-group-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.6rem 0;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 8px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background-color: #ffffff; /* Fondo blanco para cada tarea */
+  transition: all 0.2s ease;
 }
-li.task.completed .title {
-  text-decoration: line-through;
-  opacity: 0.6;
+
+/* Hover en tarea */
+#taskList li.list-group-item:hover {
+  background-color: #f1f3f5;
 }
-li.task .title {
-  cursor: pointer;
-}
-li.task button.delete-btn {
-  background: transparent;
-  border: none;
-  color: #c00;
+
+/* Título de la tarea */
+#taskList li span {
+  flex: 1;
   cursor: pointer;
 }
 
+/* Tareas completadas */
+#taskList li span.text-decoration-line-through {
+  color: #6c757d;
+  opacity: 0.7;
+}
+
+/* Botones */
+#taskList li button {
+  margin-left: 5px;
+  font-size: 0.85rem;
+}
+
+/* Input principal */
+#newTask {
+  padding: 10px;
+}

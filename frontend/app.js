@@ -1,80 +1,82 @@
-const API = 'http://localhost:3000';
+const apiUrl = "http://localhost:3000/tasks";
 
-async function loadTasks() {
-  try {
-    const res = await fetch(`${API}/tasks`);
-    const tasks = await res.json();
-    renderTasks(tasks);
-  } catch (err) {
-    console.error('Error cargando tareas', err);
-  }
+
+const taskList = document.getElementById("taskList");
+const addTaskBtn = document.getElementById("addTaskBtn");
+const newTaskInput = document.getElementById("newTask");
+
+// Función para obtener todas las tareas
+async function fetchTasks() {
+  const res = await fetch(apiUrl);
+  const tasks = await res.json();
+  renderTasks(tasks);
 }
 
+// Renderizar las tareas en la lista
 function renderTasks(tasks) {
-  const list = document.getElementById('tasksList');
-  list.innerHTML = '';
-  tasks.forEach(t => {
-    const li = document.createElement('li');
-    li.className = 'task' + (t.completed ? ' completed' : '');
-    const title = document.createElement('span');
-    title.textContent = t.title;
-    title.className = 'title';
-    title.onclick = () => toggleTask(t.id, !t.completed);
+  taskList.innerHTML = "";
+  tasks.forEach(task => {
+    // Crear contenedor de tarea
+    const li = document.createElement("li");
+    li.className = "list-group-item d-flex justify-content-between align-items-center";
 
-    const del = document.createElement('button');
-    del.textContent = 'Eliminar';
-    del.className = 'delete-btn';
-    del.onclick = () => deleteTask(t.id);
+    // Título de la tarea
+    const title = document.createElement("span");
+    title.textContent = task.title;
+    title.className = task.completed ? "text-decoration-line-through text-muted" : "";
+    title.style.flex = "1"; // Ocupa espacio disponible
+    title.style.cursor = "pointer";
 
+    // Botón completar/desmarcar
+    const completeBtn = document.createElement("button");
+    completeBtn.textContent = task.completed ? "Desmarcar" : "Completar";
+    completeBtn.className = "btn btn-sm btn-success ms-2";
+    completeBtn.onclick = () => toggleComplete(task);
+
+    // Botón eliminar
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Eliminar";
+    deleteBtn.className = "btn btn-sm btn-danger ms-2";
+    deleteBtn.onclick = () => deleteTask(task.id);
+
+    // Agregar elementos al li
     li.appendChild(title);
-    li.appendChild(del);
-    list.appendChild(li);
+    li.appendChild(completeBtn);
+    li.appendChild(deleteBtn);
+
+    // Agregar li a la lista
+    taskList.appendChild(li);
   });
 }
 
-async function addTask(title) {
-  try {
-    const res = await fetch(`${API}/tasks`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ title })
-    });
-    if (res.status === 201) {
-      loadTasks();
-    }
-  } catch (err) {
-    console.error('Error creando tarea', err);
-  }
-}
-
-async function toggleTask(id, completed) {
-  try {
-    await fetch(`${API}/tasks/${id}`, {
-      method: 'PUT',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ completed })
-    });
-    loadTasks();
-  } catch (err) {
-    console.error('Error actualizando tarea', err);
-  }
-}
-
-async function deleteTask(id) {
-  try {
-    await fetch(`${API}/tasks/${id}`, { method: 'DELETE' });
-    loadTasks();
-  } catch (err) {
-    console.error('Error eliminando tarea', err);
-  }
-}
-
-document.getElementById('btnAdd').addEventListener('click', () => {
-  const input = document.getElementById('newTask');
-  const val = input.value.trim();
-  if (!val) return;
-  addTask(val);
-  input.value = '';
+// Crear nueva tarea
+addTaskBtn.addEventListener("click", async () => {
+  const title = newTaskInput.value.trim();
+  if (!title) return alert("Escribe algo");
+  await fetch(apiUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title })
+  });
+  newTaskInput.value = "";
+  fetchTasks();
 });
 
-window.addEventListener('load', loadTasks);
+// Cambiar estado completado
+async function toggleComplete(task) {
+  await fetch(`${apiUrl}/${task.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ completed: !task.completed })
+  });
+  fetchTasks();
+}
+
+// Eliminar tarea
+async function deleteTask(id) {
+  await fetch(`${apiUrl}/${id}`, { method: "DELETE" });
+  fetchTasks();
+}
+
+// Inicializar
+fetchTasks();
